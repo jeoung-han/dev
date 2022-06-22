@@ -2,9 +2,9 @@ package menu.side;
 
 import menu.Menu;
 
-public class Spagetti extends Menu{
+public class Spaghetti extends Menu{
 	
-	public Spagetti() {
+	public Spaghetti() {
 		super(3000, 3);
 	}		
 

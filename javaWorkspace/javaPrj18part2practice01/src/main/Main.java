@@ -17,12 +17,18 @@ public class Main {
 		
 		
 		Kiosk kiosk = new Kiosk();
+//		kiosk.useKiosk();
 		Order order = kiosk.useKiosk();
+				
+		kiosk.calc(order);
 		
-		System.out.println(order);
 		// 소요시간 계산
+		System.out.print("소요시간 : ");
+		System.out.println(order.getTime());
 
 		// 가격 계산 출력
+		System.out.print("가격 : ");
+		System.out.println(order.getPrice());
 
 		// 계산하기(현금) 거스름돈 끝
 
