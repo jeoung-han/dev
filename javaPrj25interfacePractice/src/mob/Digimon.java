@@ -21,6 +21,10 @@ public abstract class Digimon implements DigimonAction{
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public void attack() {
+		System.out.println("asdf");
+	};
 
 	@Override
 	public String toString() {
