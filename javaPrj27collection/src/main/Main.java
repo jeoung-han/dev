@@ -12,10 +12,10 @@ public class Main {
 
 //		new TestList().testMethod();
 //		new TestSet().testMethod();
-//		new TestMap().testMethod();
+		new TestMap().testMethod();
 		
 //		new TestStack().testMethod();
-		new TestQueue().testMethod();
+//		new TestQueue().testMethod();
 
 	}
 

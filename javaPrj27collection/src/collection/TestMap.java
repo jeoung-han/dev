@@ -20,6 +20,8 @@ public class TestMap {
 		hm.put("two", "apple");
 		hm.put("two", "멜론");
 		hm.put("three", "tomato");
+		
+		System.out.println(hm);
 
 		System.out.println("--------------------");
 		System.out.println(hm.containsKey("one"));
@@ -37,6 +39,8 @@ public class TestMap {
 		System.out.println(hm.get("two"));
 		System.out.println(hm.get("three"));
 		System.out.println(hm.get("four"));
+		
+		
 
 	}
 
