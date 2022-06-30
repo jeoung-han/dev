@@ -36,5 +36,10 @@ public class ApiTest {
 
 		
 	}
+	
+	public void test04() {
+		String s = "apple,samsug,lg,google";
+		String[] arr = s.split(",");
+	}
 
 }
