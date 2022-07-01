@@ -2,25 +2,22 @@ package exception;
 
 public class TestException {
 
-	public void test01() {
+	public void test01() throws Exception {
 		System.out.println("test01 called...");
-		try {
-			int x = 1/0;
-		}catch (Exception e) {
-			System.out.println("예외는 내가 처리 했으니 안심해 "+e);
-		}
-			
+		test02();
 		System.out.println("test01 end...");
 	}
 
-	public void test02() {
+	public void test02() throws Exception {
 		System.out.println("test02 called...");
+		test03();
 		System.out.println("test02 end...");
 	}
 
-	public void test03() {
+	public void test03() throws Exception{
 		System.out.println("test03 called...");
-		System.out.println("test03 end...");
+		throw new PokemonException("히히");
+//		System.out.println("test03 end...");
 	}
 
 }
