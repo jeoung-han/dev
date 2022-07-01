@@ -2,7 +2,6 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FileInputCtr {
 
 	public List<String> readAll(File f) {
 
-		List<String> sList = null;
+		List<String> sList = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
 			sList = new ArrayList<>();
 			String s = "";
@@ -42,15 +41,15 @@ public class FileInputCtr {
 	}
 
 	public List<Map<Integer, String>> readHistory(File f) {
-		List<Map<Integer, String>> sList = null;
+		List<Map<Integer, String>> sList = new ArrayList<Map<Integer, String>>();
 		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
 			sList = new ArrayList<>();
 			String s = "";
 			while ((s = br.readLine()) != null) {
 				Map<Integer, String> map = new HashMap<>();
-				String[] arr = s.split(" | ");
+				String[] arr = s.split("\t");
 				for (int i = 0; i < arr.length; i++) {
-					map.put(i, s);
+					map.put(i, arr[i]);
 				}
 				sList.add(map);
 			}

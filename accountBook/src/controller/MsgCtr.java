@@ -1,43 +1,138 @@
 package controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
 import java.util.Scanner;
-
-import exception.notUserException;
+import Tools.Tool;
+import exception.NotTypeException;
+import exception.NotUserException;
 import user.User;
 
 public class MsgCtr {
-	
+
 	// 0 ■ | 1 날짜 | 2 입금,출금 | 3 카테고리 | 4 금액 | 5 메모
-	String[] cArr = {"생활비","교통비","식비","문화생활"};
+//	String[] cArr = {"생활비","교통비","식비","문화생활"};
 
 	Scanner sc = new Scanner(System.in);
 	UserCtr uc = new UserCtr();
-	FileInputCtr fic = new FileInputCtr();
+	FileOutputCtr foc = new FileOutputCtr();
+	DecimalFormat df = new DecimalFormat("###,###");
+	Tool t = new Tool();
 	
-	public void rayout(User user) {
-		System.out.println("-----------------------");
-		System.out.println(" ▶ "+"가계부");
-		System.out.println("-----------------------");
-		List<String> list = fic.readAll(user.getMyfile());
-		for(String s : list) {
-			System.out.println(s);
-		}
-		System.out.println("-----------------------");
+	public int checkDate() throws NotTypeException {
+		System.out.println("---------------------------------------------------");
+		System.out.print("날짜를 입력해주시기 바랍니다. yyyymmdd");
+		String temp = sc.nextLine();
+		if (temp.length()!=8)
+			throw new NotTypeException();
+		return Integer.parseInt(temp);// exception
 	}
-	
+
+	public int action() throws Exception {
+		System.out.println("---------------------------------------------------");
+		System.out.println("   1. 작성하기   2. 필터보기   3. 종료하기");
+		System.out.println("---------------------------------------------------");
+		int i = Integer.parseInt(sc.nextLine());
+		if (i == 1 || i == 2 || i == 3) {
+			return i;
+		} else throw new NotTypeException();
+	}
+
+	public int action2() throws Exception {
+		System.out.println("---------------------------------------------------");
+		System.out.println("   1. 날짜    2. 입금   3. 출금    4. 카테고리별");
+		System.out.println("---------------------------------------------------");
+		int i = Integer.parseInt(sc.nextLine());
+		if (i == 1 || i == 2 || i == 3 || i == 4) {
+			return i;
+		} else throw new NotTypeException();
+	}
+
+	public int action3() throws Exception {
+		System.out.println("---------------------------------------------------");
+		System.out.println("    1. 교통비   2. 식비   3. 생활비   4. 문화생활 ");
+		System.out.println("---------------------------------------------------");
+		int i = Integer.parseInt(sc.nextLine());
+		if (i == 1 || i == 2 || i == 3 || i == 4) {
+			return i;
+		} else throw new NotTypeException();
+	}
+
+	public String input() throws Exception {
+		String s = "■";
+		System.out.println("---------------------------------------------------");
+		System.out.print("   작성 일시 (yyyymmdd): ");
+		String temp = sc.nextLine();
+		if (temp.length()!=8)
+			throw new NotTypeException();
+		Integer.parseInt(temp);// exception
+		s += "\t" + temp;
+		System.out.println("---------------------------------------------------");
+		System.out.println("   1. 입금    2. 출금 ");
+		System.out.println("---------------------------------------------------");
+		temp = sc.nextLine();
+		if (temp.equals("1")) {
+			s += "\t입금 ▲";
+		} else if (temp.equals("2")) {
+			s += "\t출금 ▼";
+		} else throw new NotTypeException();
+		System.out.println("---------------------------------------------------");
+		System.out.println("    1. 교통비   2. 식비   3. 생활비   4. 문화생활 ");
+		System.out.println("---------------------------------------------------");
+		temp = sc.nextLine();
+		if (temp.equals("1")) {
+			s += "\t교통비";
+		} else if (temp.equals("2")) {
+			s += "\t식비";
+		} else if (temp.equals("3")) {
+			s += "\t생활비";
+		} else if (temp.equals("4")) {
+			s += "\t문화생활";
+		} else throw new NotTypeException();
+		System.out.println("---------------------------------------------------");
+		System.out.print("   금액 : ");
+		temp = sc.nextLine();
+		temp.replaceAll(",", "");
+		s += "\t" + df.format(Integer.parseInt(temp));
+		System.out.println("---------------------------------------------------");
+		System.out.print("   메모 :  ");
+		s += "\t" + sc.nextLine();
+		return s;
+	}
+
+	public void rayout(User user) {
+		System.out.println("---------------------------------------------------");
+		System.out.println(" ▶ " + "가계부");
+		System.out.println("---------------------------------------------------");
+		t.printList(user);
+		System.out.println("---------------------------------------------------");
+	}
+
 	public void rayout(User user, String title) {
-		int temp = category(title);
-		System.out.println("-----------------------");
-		System.out.println(" ▶ "+title);
-		System.out.println("-----------------------");
-		List<Map<Integer, String>> list = fic.readHistory(user.getMyfile());
-		for(Map<Integer, String> m : list) {
-			if(m.get(3).equals(title)) System.out.println(m.toString());
+		System.out.println("---------------------------------------------------");
+		System.out.println(" ▶ " + title);
+		System.out.println("---------------------------------------------------");
+		t.printHistory(user, title);
+		System.out.println("---------------------------------------------------");
+	}
+
+	public void rayout(User user, int date) {
+		System.out.println("---------------------------------------------------");
+		System.out.println(" ▶ " + date);
+		System.out.println("---------------------------------------------------");
+		t.printHistory(user, date);
+		System.out.println("---------------------------------------------------");
+	}
+
+	public void rayout(User user, boolean deposit) {
+		String temp = "출금 ▼";
+		if (deposit) {
+			temp = "입금 ▲";
 		}
-		System.out.println("-----------------------");
+		System.out.println("---------------------------------------------------");
+		System.out.println(" ▶ " + temp);
+		System.out.println("---------------------------------------------------");
+		t.printHistory(user, deposit);
+		System.out.println("---------------------------------------------------");
 	}
 
 	public String rogin() throws Exception {
@@ -46,10 +141,11 @@ public class MsgCtr {
 		String name = sc.nextLine();
 		try {
 			uc.checkUser(name);
-		} catch (notUserException e) {
+		} catch (NotUserException e) {
 			System.out.println("아이디가 존재하지 않습니다.");
 			System.out.println("생성 하시겠습니까?");
-			if (check() == 1) uc.createUser(name);
+			if (check() == 1)
+				uc.createUser(name);
 			else throw new Exception();
 		}
 		return name;
@@ -59,14 +155,6 @@ public class MsgCtr {
 		System.out.println(" 1. yes   2. no");
 		System.out.print("입력 : ");
 		return Integer.parseInt(sc.nextLine());
-	}
-	
-	private int category(String s) {
-		int i = 0;
-		for(;i<cArr.length;i++) {
-			if(cArr[i].equals(s)) break;
-		}
-		return i;
 	}
 
 }

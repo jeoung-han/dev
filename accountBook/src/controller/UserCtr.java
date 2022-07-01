@@ -4,19 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import exception.notUserException;
+import exception.NotUserException;
 
 public class UserCtr {
 	
-	private String userDir = "D:/dev/mydev/accountBook/user/";
+	private String userDir = System.getProperty("user.dir")+"/user/";
 	private File list = new File(userDir,"userList.txt");
 	
 	FileOutputCtr foc = new FileOutputCtr();
 	FileInputCtr fic = new FileInputCtr();
 	
-	public void checkUser(String name) throws notUserException {
+	public void checkUser(String name) throws NotUserException {
 		List<String> list = fic.readAll(this.list);
-		if(!list.contains(name)) throw new notUserException();
+		if(!list.contains(name)) throw new NotUserException();
 	}
 	
 	public void createUser(String name) throws IOException {

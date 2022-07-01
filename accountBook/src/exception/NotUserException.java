@@ -2,6 +2,6 @@ package exception;
 
 import java.io.IOException;
 
-public class notUserException extends IOException {
+public class NotUserException extends IOException {
 
 }
