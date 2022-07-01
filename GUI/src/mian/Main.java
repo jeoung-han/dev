@@ -1,22 +1,50 @@
 package mian;
 
 import javax.swing.*;
-
-public class Main {
-	public static void main(String[] args) {
-		JFrame f = new JFrame();// creating instance of JFrame
-
-		JButton b = new JButton("click");// creating instance of JButton
-		b.setBounds(200, 200, 200, 200);// x axis, y axis, width, height
-
-		f.add(b);// adding button in JFrame
-
-		f.setSize(500, 500);// 400 width and 500 height
-		f.setLayout(null);// using no layout managers
-		f.setVisible(true);// making the frame visible
-		
-		
-		
-		
-	}
+import java.awt.event.*;
+ 
+public class Main extends JFrame {
+ 
+    public Main() {
+ 
+        JPanel panel = new JPanel();
+ 
+        JLabel label = new JLabel("ID : ");
+ 
+        JLabel pswrd = new JLabel("PassWord : ");
+ 
+        JTextField txtID= new JTextField(10);
+ 
+        JPasswordField txtPass = new JPasswordField(10);
+ 
+        JButton logBtn = new JButton("Log in");
+ 
+ 
+        panel.add(label);
+        panel.add(txtID);
+        panel.add(pswrd);
+        panel.add(txtPass);
+        panel.add(logBtn);
+        
+        add(panel);
+        
+        
+        setVisible(true);
+ 
+        setSize( 600 , 400);
+ 
+        setLocationRelativeTo(null);
+ 
+        setResizable(false);
+ 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    
+    public static void main(String[] args) {
+    	 
+        new Main();
+ 
+ 
+  }
 }
