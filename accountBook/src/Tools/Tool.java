@@ -68,7 +68,7 @@ public class Tool {
 		int sum2 = 0;
 		
 		for (Map<Integer, String> m : list) {
-			if (m.get(1).equals(date)) {
+			if (m.get(1).equals(Integer.toString(date))) {
 				if (m.get(2).equals("입금 ▲")) {
 					String temp = m.get(4);
 					sum1 += Integer.parseInt(temp.replaceAll(",", ""));
@@ -96,7 +96,7 @@ public class Tool {
 		List<Map<Integer, String>> list = fic.readHistory(user.getMyfile());
 		
 		for (Map<Integer, String> m : list) {
-			if (m.get(1).equals(temp)) {
+			if (m.get(2).equals(temp)) {
 				if (m.get(2).equals("입금 ▲")) {
 					String temp2 = m.get(4);
 					sum1 += Integer.parseInt(temp2.replaceAll(",", ""));
