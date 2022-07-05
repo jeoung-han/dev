@@ -25,6 +25,7 @@ FROM bonus;
 SELECT *
 FROM dept;
 
+
 --EMP테이블에서 사원번호 사원이름 월급 조회하기
 SELECT empno, ename, sal
 FROM emp;
@@ -129,11 +130,17 @@ WHERE SAL >= 1000;
 
 -- 실습문제
 -- 1. EMP 테이블에서 COMM 이 NULL 인 사원의 이름, 입사일, 부서코드 조회
-SELECT ENAME, HIERDATE, DEPTNO
--- 2. EMP 테이블에서 급여가 1500이하인 사원의 이름, 급여, 부서코드 조회 
+SELECT ENAME, HIREDATE, DEPTNO
+FROM EMP
+WHERE COMM IS NULL;
 
+-- 1. EMP 테이블에서 COMM 이 0 초과인 사원의 이름, 입사일, 부서코드 조회
+SELECT ENAME, HIREDATE, DEPTNO
+FROM EMP
+WHERE COMM > 0;
 
-
-
-
+-- 2. EMP 테이블에서 급여가 1500이하인 사원의 이름, 급여, 부서코드 조회
+SELECT ENAME, SAL, DEPTNO
+FROM EMP
+WHERE SAL <= 1500;
 
