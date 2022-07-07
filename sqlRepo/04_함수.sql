@@ -304,8 +304,186 @@ SELECT 20220706 FROM DUAL;
     3. TO_NUMBER
 */
 SELECT TO_NUMBER('123456789') FROM DUAL;
-SELECT TO_NUMBER('힝굴') FROM DUAL;--안됌
+--SELECT TO_NUMBER('힝굴') FROM DUAL;--안됌
 SELECT '123' + '456' FROM DUAL; --자동 형 변환
+--SELECT '123' + '456A' FROM DUAL;--문자 안댐
+--SELECT TO_NUMBER('456A') FROM DUAL;
+--SELECT '10,000' + '2,000' FROM DUAL;
+--SELECT TO_NUMBER('10,000') + TO_NUMBER('2,000') FROM DUAL;
+SELECT TO_NUMBER('10,000', '99,999,999') + TO_NUMBER('2,000', '99,999,999') FROM DUAL;
+
+--------------------------------------------------------------------------------
+
+/*
+    NULL 처리 함수
+        [문법]
+            NVL(칼럼, NULL대체값)
+            
+        - NULL로 되어있는 칼럼의 값을 인자로 지정한 값으로 반환
+        
+            NVL2(칼럼, 대체값 1, 대체값 2)
+        - 칼럼 값이 NULL이 아니면 변경할 값 1, NULL이면 2 반환
+        
+            NULLIF(비교대상 1, 비교대상 2)
+        - 두개의 값이 동일하면 NULL 반환
+        - 두개의 값이 동일하지 않으면 비교대상 1 반환
+            
+*/
+
+SELECT * FROM EMP;
+
+-- EMP 테이블에서 사원명, COMM 조회 (COMM이 NULL 이면 0을 출력) 
+
+SELECT ENAME, NVL(COMM, 0)
+FROM EMP;
+
+-- EMP 테이블에서 사원명, (급여+COMM)*12 조회 (NULL 값은 0으로 처리하여 계산)
+
+--SELECT ENAME, NVL((SAL+COMM)*12, 0)
+--FROM EMP;
+
+SELECT ENAME, (SAL + NVL(COMM, 0))*12
+FROM EMP;
+
+-- EMP 테이블에서 사원명, JOB, MGR 조회 (MGR NULL 인경우 0)
+
+SELECT ENAME, JOB, NVL(MGR,0)
+FROM EMP;
+
+-- EMP 테이블에서 사원명, SAL+COMM AS 급여 조회 (COMM이 없으면 0, 있으면 100)
+SELECT ENAME, (SAL+NVL2(COMM, 100, 0)) AS 급여
+FROM EMP;
+
+SELECT NULLIF(123, 123)
+FROM DUAL;
+
+-- EMP 테이블에서 사원명, SAL+COMM AS 급여 조회 (COMM이 없으면 0, 있으면 100)
+SELECT 
+    ENAME,
+    COMM,
+    SAL,
+    (SAL+NVL2(NULLIF(COMM,0), 100, 0)) AS 급여
+FROM EMP;
+
+/*
+    선택함수
+        여러가지 경우 선택을 할 수 있는 기능을 제공
+        
+    DECODE(칼럼|계산식, 조건값1, 결과값 1, 조건값2, 결과값 2....)
+    - 비교하고자 하는 값이 조건값과 일치할 경우 그에 해당하는 결과값 반환
+    - 모든 조건에 해당하지 않으면 NULL
+    
+*/
+
+SELECT
+    EMPNO,
+    ENAME,
+    JOB,
+    DECODE(JOB, 'MANAGER', '메니저', 'SALESMAN', '영업', JOB, JOB)
+FROM
+    EMP;
+
+/*
+    CASE
+        문법
+        CASE WHEN 조건식 1 THEN 결과값 1
+             WHEN 조건식 2 THEN 결과값 2
+             ...
+             ELSE 결과값
+        END
+*/
+
+-- EMP 사원명, 급여, 구분(급여가 1000아래면 초급, 1000~3000 중급 , 나머지 고급) 조회 
+SELECT
+    ENAME,
+    SAL,
+    CASE WHEN SAL < 1000 THEN '초급'
+--         WHEN SAL BETWEEN 1000 AND 3000 THEN '중급'
+         WHEN SAL < 3000 THEN '중급'
+         ELSE '고급'
+    END AS 구분
+FROM
+    EMP;
+-------------------------------------------------------------------------------
+--그룹함수
+
+/*
+    대량의 데이터들로 집계나 통계 같은 작업을 처리하는 경우 사용
+    모든 그룹 함수는 NULL값을 자동으로 제외하고 값이있는 것들만 계산
+    위의 이유로 인해 AVG 함수 사용시 반드시 NVL함수를 사용하는것을 권장
+*/
+
+/*SUM*/
+SELECT 1, SUM(COMM)
+FROM EMP;
+
+--SELECT ENAME, SUM(COMM)
+--FROM EMP; 그룹함수 한개만 나옴 여러개나오는거랑 같이 출력 불가능
+
+-- EMP 테이블에서 부서코드가 30인 사원들의 급여 합계 조회
+SELECT SUM(SAL)
+FROM EMP
+WHERE DEPTNO = 30;
+
+--COMM 가 NULL 이 아닌 사원들의 COMM 합계 조회
+SELECT SUM(COMM)
+FROM EMP;
+--WHERE COMM IS NOT NULL;
+
+--EMP 테이블 사원명이 S로 시작하는 사원의 SAL 합계
+SELECT SUM(SAL)
+FROM EMP
+WHERE ENAME LIKE('S%');
+
+/*AVG()*/
+
+--EMP 전 사원 급여 평균
+SELECT AVG(SAL)
+FROM EMP;
+
+--EMP 부서코드 10 급여평균
+SELECT ROUND(AVG(NVL(COMM,0)))
+FROM EMP
+WHERE DEPTNO = 30;
+
+--EMP 입사일자가 81년도 이후인 급여의 평균 조회
+SELECT AVG(SAL)
+FROM EMP
+WHERE HIREDATE >= '1982.01.01';
+
+SELECT EXTRACT(YEAR FROM HIREDATE)
+FROM EMP;
+
+/*MIN MAX*/
+
+-- EMP 테이블 가장 낮은 급여
+SELECT MIN(SAL)
+FROM EMP;
+
+-- 가장 높은 급여
+SELECT MAX(SAL)
+FROM EMP;
+
+/*COUNT 행의 갯수*/
+SELECT 
+--    *
+    COUNT(*)
+FROM EMP
+WHERE DEPTNO = 30
+;
+
+SELECT COUNT(DISTINCT DEPTNO)
+FROM EMP;
+
+SELECT 
+--    COMM 14개 
+    COUNT(COMM)--6개
+FROM EMP;
+
+
+
+
+
 
 
 
