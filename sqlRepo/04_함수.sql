@@ -106,7 +106,7 @@ SELECT SUBSTR('HELLO WORLD', 3, 5) FROM DUAL;
 SELECT SUBSTR('HELLO WORLD', -5, 3) FROM DUAL;
 
 /*
-    7. LOWER . UPPER / INITCAP(영단어의 첫글자 전부/구분은 영,숫 이외)
+    7. LOWER / UPPER / INITCAP(영단어의 첫글자 전부/구분은 영,숫 이외)
 */
 
 SELECT LOWER('HELLO WORLD') FROM DUAL;
