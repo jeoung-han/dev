@@ -59,8 +59,51 @@ FROM EMP
 GROUP BY DEPTNO;
 
 
+-----------0708------------
+
+SELECT ENAME, 777
+FROM EMP;
+
+SELECT 
+    EMPNO
+    , ENAME
+    , NVL(MGR, -1) --MGR이 NULL이면 -1로 바꿈
+FROM EMP;
 
 
+
+-- DECODE와 CASE의 차이
+-- DECODE 예시
+SELECT 
+    EMPNO
+    , ENAME
+    , DECODE(DEPTNO, 10, 1) --DEPTNO가 10이면 1로 바꿈
+FROM EMP;
+
+-- CASE 예시
+SELECT 
+    EMPNO
+    , ENAME
+    , CASE
+    WHEN DEPTNO = 10 THEN 1 --위에랑 같은 식
+    WHEN DEPTNO BETWEEN 5 AND 15 THEN 2
+    WHEN DEPTNO = 30 THEN 3
+    --조건을 마음대로 넣을 수 있다, 조건식이 모두 T여야 THEN 실행
+    ELSE -1 --ELSE 사용 가능
+    END
+FROM EMP;
+
+-- EMP 테이블에서 사원명, SAL+COMM AS 급여 조회 (COMM이 없으면 0, 있으면 100)
+SELECT 
+    ENAME,
+    COMM,
+    SAL,
+    (SAL+NVL2(NULLIF(COMM,0), 100, 0)) AS 급여
+    --COMM이 0이면 NULL 출력, 아니면 COMM그대로 출력
+    --SAL+NVL2(NULLIF(NULL, 100, 0)
+    --SAL + (NULL이면 100 OR 100)
+    --SAL+NVL2(NULLIF(COMM, 100, 0)
+FROM EMP;
 
 
 
