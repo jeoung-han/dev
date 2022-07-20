@@ -6,6 +6,8 @@ import member.MemberController;
 import member.MemberDto;
 
 public class Main {
+	
+	public static MemberDto user = null;
 
 	public static void main(String[] args) {
 
@@ -22,12 +24,11 @@ public class Main {
 		
 		switch(input) {
 		case "1" : 
-			MemberDto dto = mc.login(); 
-			mc.loginCheck(dto);
+			mc.login();
 			break;
 		case "2" : 
-			int result = mc.join();
-			if(result > 0) System.out.println("회원가입 성공!");
+			int temp = mc.join();
+			if(temp > 0) System.out.println("회원가입 성공!");
 			else System.out.println("회원가입 실패...");
 			break;
 		case "3" : 
