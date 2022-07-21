@@ -20,6 +20,7 @@ public class JDBCTemplate {
 			String pwd = "KH";
 			
 			conn = DriverManager.getConnection(url, id, pwd);
+			conn.setAutoCommit(false);
 			
 		} catch (Exception e) {
 			System.out.println("커넥션 가지고오기 실패!");
